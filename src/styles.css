@@ -1,0 +1,11 @@
+/* styles.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    /*background-image: url('D:\Projects\wedding-rsvp\wedding-rsvp\src\assets\image.jpeg');*/
+    background-size: cover; /* Adjusts the background image to cover the entire body */
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* This keeps the background image fixed while scrolling */
+  }
+  
