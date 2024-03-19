@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 
 function Header() {
   return (
-    <AppBar position="static">
+    <AppBar position="center">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Wedding RSVP

@@ -1,33 +1,54 @@
-// RSVPForm.js
-
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Radio from '@mui/material/Radio';
+import axios from 'axios';
 
 function RSVPForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [guests, setGuests] = useState('');
-  const [response, setResponse] = useState('accept'); // Default response
+  const [selectedResponse, setSelectedResponse] = useState('accept');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ name, email, guests, response });
-    setName('');
-    setEmail('');
-    setGuests('');
-    setResponse('accept'); // Reset response after submission
+    try {
+      const response = await axios.post('http://localhost:3000/api/rsvp', {
+        name,
+        email,
+        guests,
+        response: selectedResponse,
+      });
+      console.log(response.data); // Log the response from the server
+      // Optionally, display a success message to the user
+    } catch (error) {
+      console.error('Error submitting RSVP:', error);
+      // Optionally, display an error message to the user
+    }
   };
 
   return (
-    <Box sx={{ maxWidth: 400, margin: '0 auto', mt: 4, p: 2 }}>
+    <div>
       <form onSubmit={handleSubmit}>
+      <div>
+          <label>
+            <input
+              type="radio"
+              value="accept"
+              checked={selectedResponse === 'accept'}
+              onChange={() => setSelectedResponse('accept')}
+            />
+            Accept with Pleasure
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="decline"
+              checked={selectedResponse === 'decline'}
+              onChange={() => setSelectedResponse('decline')}
+            />
+            Decline with Regards
+          </label>
+        </div>
         <TextField
           fullWidth
           label="Name"
@@ -54,23 +75,11 @@ function RSVPForm() {
           required
           margin="normal"
         />
-        <FormControl component="fieldset" sx={{ mt: 2 }}>
-          <FormLabel component="legend">Response</FormLabel>
-          <RadioGroup
-            aria-label="response"
-            name="response"
-            value={response}
-            onChange={(e) => setResponse(e.target.value)}
-          >
-            <FormControlLabel value="accept" control={<Radio />} label="Accept with Pleasure" />
-            <FormControlLabel value="decline" control={<Radio />} label="Decline with Regards" />
-          </RadioGroup>
-        </FormControl>
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+        <Button type="submit" variant="contained" color="primary">
           Submit RSVP
         </Button>
       </form>
-    </Box>
+    </div>
   );
 }
 
